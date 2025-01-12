@@ -82,7 +82,7 @@ class MongoClient:
             
             documents = []
             for doc in cursor:
-                doc["id"] = str(doc.pop("_id"))
+                # doc["id"] = str(doc.pop("_id"))
                 documents.append(doc)
             
             return documents

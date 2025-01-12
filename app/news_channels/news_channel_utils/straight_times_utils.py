@@ -153,16 +153,16 @@ async def update_news_to_db() -> None:
 
 
 
-        sanitized_title = re.sub(r'[<>:"/\\|?*]', '_', title)
-        trim_title = sanitized_title[:20] if len(sanitized_title) > 20 else sanitized_title
-        # save the news item to a json
-        folder_path = "news items"
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
-        file_name = f"{trim_title}.json"
-        file_path = os.path.join(folder_path, file_name)
-        with open(file_path, "w") as f:
-            json.dump(news_item, f, indent=4)
+        # sanitized_title = re.sub(r'[<>:"/\\|?*]', '_', title)
+        # trim_title = sanitized_title[:20] if len(sanitized_title) > 20 else sanitized_title
+        # # save the news item to a json
+        # folder_path = "news items"
+        # if not os.path.exists(folder_path):
+        #     os.makedirs(folder_path)
+        # file_name = f"{trim_title}.json"
+        # file_path = os.path.join(folder_path, file_name)
+        # with open(file_path, "w") as f:
+        #     json.dump(news_item, f, indent=4)
 
         if title:
             async with semaphore:  # Ensure only 3 tasks run concurrently
@@ -176,15 +176,16 @@ async def update_news_to_db() -> None:
                     news_item_generated = await smart_news_crawler(link)
                     # print(f"Generated news item: {news_item_generated}")
                     # save the generated news item to a json, with file name as title
-                    sanitized_title = re.sub(r'[<>:"/\\|?*]', '_', title)
-                    trim_title = sanitized_title[:20] if len(sanitized_title) > 20 else sanitized_title
-                    gen_file_name = f"{trim_title}_generated.json"
-                    folder_path = "news items"
-                    if not os.path.exists(folder_path):
-                        os.makedirs(folder_path)
-                    gen_file_path = os.path.join(folder_path, gen_file_name)
-                    with open(gen_file_path, "w") as f:
-                        json.dump(news_item_generated, f, indent=4)
+
+                    # sanitized_title = re.sub(r'[<>:"/\\|?*]', '_', title)
+                    # trim_title = sanitized_title[:20] if len(sanitized_title) > 20 else sanitized_title
+                    # gen_file_name = f"{trim_title}_generated.json"
+                    # folder_path = "news items"
+                    # if not os.path.exists(folder_path):
+                    #     os.makedirs(folder_path)
+                    # gen_file_path = os.path.join(folder_path, gen_file_name)
+                    # with open(gen_file_path, "w") as f:
+                    #     json.dump(news_item_generated, f, indent=4)
 
                     # Safely remove the 'title' key if it exists
                     news_item_generated.pop("title", None) 
