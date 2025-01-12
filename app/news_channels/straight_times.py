@@ -4,17 +4,16 @@ Straight Times news channel implementation.
 from typing import List, Dict, Any
 from .news_config import NEWS_CHANNELS
 from .news_channel_utils import straight_times_utils
-import json
 
 # Get channel specific configuration
 CHANNEL_CONFIG = NEWS_CHANNELS["straight_times"] if "straight_times" in NEWS_CHANNELS else None
 
 async def update_news() -> None:
     """
-    Update news from Straight Times.
+    Update news from Straight Times to the database.
     """
-    # Access config using CHANNEL_CONFIG
-
+    # Update the db with the latest news
+    await straight_times_utils.update_news_to_db()
     pass
 
 async def extract_news() -> List[Dict[str, Any]]:
@@ -26,8 +25,9 @@ async def extract_news() -> List[Dict[str, Any]]:
     # save the news items to a json
     with open("news_items.json", "w") as f:
         json.dump(all_news_items, f, indent=4)
-    # print(fetch_rss_all_feeds)
-    pass
+
+    return all_news_items
+
 
 if __name__ == "__main__":
     import asyncio
@@ -44,11 +44,11 @@ if __name__ == "__main__":
         # print("\nTesting update_news()...")
         # await update_news()
         
-        print("\nTesting extract_news()...")
-        news = await extract_news()
-        print(f"Retrieved news: {news}")
+        print("\nTesting update_news()...")
+        await update_news()
 
     # Run the async main function
     asyncio.run(main())
 
     # python -m app.news_channels.straight_times
+

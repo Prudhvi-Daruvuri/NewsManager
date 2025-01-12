@@ -36,3 +36,4 @@ async def parse_article(article_url: str) -> Dict[str, Any]:
     
     # TODO: Implement article parsing when configuration is available
     return {}
+

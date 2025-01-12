@@ -6,8 +6,8 @@ load_dotenv()
 
 class MongoConfig:
     MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://localhost:27017")
-    DB_NAME = os.getenv("MONGODB_DB_NAME", "news_manager")
-    COLLECTION_NAME = os.getenv("MONGODB_COLLECTION", "news")
+    NEWS_DATABASE = os.getenv("MONGODB_DB_NAME", "news_manager")
+    NEWS_COLLECTION = os.getenv("MONGODB_COLLECTION", "news")
 
 class Settings:
     PROJECT_NAME = "NewsManager"

@@ -1,12 +1,17 @@
 """
 Utility functions for Straight Times news channel.
 """
+import os
 import aiohttp
 import xml.etree.ElementTree as ET
 from typing import List, Dict, Any
 from ..news_config import NEWS_CHANNELS
 import json
 import asyncio
+from .mongo_news_utils import MongoClient, MongoConfig
+from ...crawler.crawler_utils import smart_news_crawler
+from asyncio import Semaphore
+import re
 
 # Get channel specific configuration
 CHANNEL_CONFIG = NEWS_CHANNELS["straight_times"] if "straight_times" in NEWS_CHANNELS else None
@@ -137,14 +142,85 @@ async def fetch_rss_all_feeds() -> List[Dict[str, str]]:
                 news_items.append(item)
     return news_items
     
-    
+async def update_news_to_db() -> None:
+    all_news_items = await fetch_rss_all_feeds()
+    semaphore = Semaphore(3)  # Limit concurrency to 3 parallel tasks
+    new_item_count = 0
 
+    async def process_news_item(news_item):
+        nonlocal new_item_count
+        title = news_item.get("title")
+
+
+
+        sanitized_title = re.sub(r'[<>:"/\\|?*]', '_', title)
+        trim_title = sanitized_title[:20] if len(sanitized_title) > 20 else sanitized_title
+        # save the news item to a json
+        folder_path = "news items"
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        file_name = f"{trim_title}.json"
+        file_path = os.path.join(folder_path, file_name)
+        with open(file_path, "w") as f:
+            json.dump(news_item, f, indent=4)
+
+        if title:
+            async with semaphore:  # Ensure only 3 tasks run concurrently
+                existing_news_item = MongoClient.search_collection(
+                    MongoConfig.NEWS_DATABASE,
+                    MongoConfig.NEWS_COLLECTION,
+                    {"title": title}
+                )
+                if not existing_news_item:
+                    link = news_item.get("link")
+                    news_item_generated = await smart_news_crawler(link)
+                    # print(f"Generated news item: {news_item_generated}")
+                    # save the generated news item to a json, with file name as title
+                    sanitized_title = re.sub(r'[<>:"/\\|?*]', '_', title)
+                    trim_title = sanitized_title[:20] if len(sanitized_title) > 20 else sanitized_title
+                    gen_file_name = f"{trim_title}_generated.json"
+                    folder_path = "news items"
+                    if not os.path.exists(folder_path):
+                        os.makedirs(folder_path)
+                    gen_file_path = os.path.join(folder_path, gen_file_name)
+                    with open(gen_file_path, "w") as f:
+                        json.dump(news_item_generated, f, indent=4)
+
+                    # Safely remove the 'title' key if it exists
+                    news_item_generated.pop("title", None) 
+                    news_item = {**news_item, **news_item_generated}
+
+                    MongoClient.insert_document(
+                        MongoConfig.NEWS_DATABASE,
+                        MongoConfig.NEWS_COLLECTION,
+                        news_item
+                    )
+                    print(f"Inserted news item: {title}")
+                    new_item_count += 1
+                else:
+                    print(f"News item already exists: {title}")
+
+    # Create tasks for all news items
+    tasks = [process_news_item(news_item) for news_item in all_news_items]
+    # Run the tasks concurrently with the specified concurrency level
+    await asyncio.gather(*tasks)
+
+    print(f"Updated {new_item_count} news items to the database")
+    
 async def main():
-    rss_link = "https://www.straitstimes.com/news/world/rss.xml"
-    data = await parse_rss_feed(rss_link)
-    # save the data to a json file
-    with open("data.json", "w") as f:
-        json.dump(data, f, indent=4)
+    # rss_link = "https://www.straitstimes.com/news/world/rss.xml"
+    # data = await parse_rss_feed(rss_link)
+    # # save the data to a json file
+    # with open("data.json", "w") as f:
+    #     json.dump(data, f, indent=4)
+    # collections = MongoClient.get_collection_list(MongoConfig.NEWS_DATABASE)
+    # print(f"Collections in {MongoConfig.NEWS_DATABASE}: {collections}")
+
+    # # Test the smart crawler
+    # source_test_link = "https://www.straitstimes.com/world/europe/trumps-ukraine-envoy-keith-kellogg-attends-iran-opposition-event-in-paris"
+    # result = await smart_news_crawler(source_test_link)
+    # print(json.dumps(result, indent=4))
+    pass
 
 if __name__ == "__main__":
     asyncio.run(main())
