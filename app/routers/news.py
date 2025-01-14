@@ -26,6 +26,7 @@ async def get_news_simple(
         Next older item if navigation is 'next',
         Next newer item if navigation is 'previous'
     """
+    print(f"Payload: {last_retrieved_id}, {navigation}")
     try:
         # Build the query based on last_retrieved_id and navigation
         query = {}
@@ -86,7 +87,12 @@ async def get_news_simple(
             sort=[("_id", 1)],
             limit=1
         )
-        
+        print("Current id: ", news_id)
+
+        # The "description" field has <p> tags, so we need to remove them
+        news_item["description"] = news_item["description"].replace("<p>", "").replace("</p>", "")
+
+
         return {
             "message": "Success",
             "id": news_id,
