@@ -90,7 +90,11 @@ async def get_news_simple(
         print("Current id: ", news_id)
 
         # The "description" field has <p> tags, so we need to remove them
-        news_item["description"] = news_item["description"].replace("<p>", "").replace("</p>", "")
+        news_item["description"] = (
+            news_item["description"].replace("<p>", "").replace("</p>", "")
+            if news_item["description"] is not None
+            else ""
+        )
 
 
         return {
