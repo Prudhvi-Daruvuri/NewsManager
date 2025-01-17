@@ -96,6 +96,7 @@ async def get_news_simple(
             else ""
         )
 
+
         return {
             "message": "Success",
             "id": news_id,
