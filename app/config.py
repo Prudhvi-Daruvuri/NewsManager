@@ -1,4 +1,5 @@
 import os
+import json
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -15,10 +16,10 @@ class Settings:
     PROJECT_DESCRIPTION = "A FastAPI-based news management system"
     
     # CORS Configuration
-    CORS_ORIGINS = ["*"]
+    default_origins = ["http://54.167.37.145:8080", "http://localhost:8080", "http://localhost:8000"]
+    CORS_ORIGINS = json.loads(os.getenv("CORS_ORIGINS", json.dumps(default_origins)))
     CORS_CREDENTIALS = True
     CORS_METHODS = ["*"]
     CORS_HEADERS = ["*"]
-
-    # MongoDB Configuration
+    
     mongo = MongoConfig

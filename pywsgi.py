@@ -22,10 +22,11 @@ class StandaloneApplication(BaseApplication):
 
 if __name__ == "__main__":
     options = {
-        "bind": "0.0.0.0:8000",
+        "bind": "0.0.0.0:8000",  # Bind to all interfaces
         "workers": 2,
         "worker_class": "uvicorn.workers.UvicornWorker",
         "timeout": 120,
-        "reload": False
+        "reload": False,
+        "forwarded_allow_ips": "*"  # Allow forwarded requests
     }
     StandaloneApplication(app, options).run()
