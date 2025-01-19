@@ -12,6 +12,8 @@ A FastAPI-based news management system that aggregates and manages news from mul
   - CNA (Channel News Asia)
   - New York Times
   - Straits Times
+- Category-based news filtering
+- Cross-platform support (Windows and Linux)
 
 ## Project Structure
 
@@ -55,9 +57,20 @@ pip install -r requirements.txt
    - Ensure MongoDB is installed and running
    - Update connection settings in `config.py` if needed
 
-5. Run the application:
+## Running the Application
+
+### Development Mode
 ```bash
 uvicorn app.main:app --reload
+```
+
+### Production Mode
+Use the `pywsgi.py` script which automatically selects the appropriate server:
+- Windows: Uses Uvicorn
+- Linux: Uses Gunicorn with Uvicorn workers
+
+```bash
+python pywsgi.py
 ```
 
 The API will be available at `http://localhost:8000`
@@ -65,17 +78,27 @@ API documentation will be available at `http://localhost:8000/docs`
 
 ## API Endpoints
 
-- `/news`: News management endpoints
-  - GET: Retrieve news articles
-  - POST: Add new articles
-  - PUT: Update existing articles
+### News Endpoints
+
+- `/news/get_news_simple`: Get news articles with navigation and filtering
+  - Query Parameters:
+    - `last_retrieved_id` (optional): ID of the last retrieved document
+    - `navigation` (optional): Direction of navigation ('next' or 'previous')
+    - `category` (optional): Filter news by category
+  - Returns:
+    - Latest news item if no parameters provided
+    - Next/previous items based on navigation direction
+    - Category-filtered results when category is specified
 
 ## Requirements
 
 - Python 3.7+
 - MongoDB
 - FastAPI
-- Other dependencies listed in `requirements.txt`
+- Additional dependencies:
+  - Uvicorn (Windows/Development)
+  - Gunicorn (Linux/Production)
+  - Other dependencies listed in `requirements.txt`
 
 ## Contributing
 
