@@ -1,0 +1,16 @@
+<opml version="2.0">
+    <head>
+        <title/>
+        <dateModified>Sun, 19 Jan 2025 21:05:20 +0000</dateModified>
+    </head>
+    <body>
+        <outline text="Latest" type="rss" xmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml" htmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml"/>
+        <outline text="Asia" type="rss" xmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6511" htmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6511"/>
+        <outline text="Business" type="rss" xmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6936" htmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6936"/>
+        <outline text="Singapore" type="rss" xmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10416" htmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10416"/>
+        <outline text="Sport" type="rss" xmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10296" htmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10296"/>
+        <outline text="Singapore" type="rss" xmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10418" htmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10418"/>
+        <outline text="World" type="rss" xmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6311" htmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6311"/>
+        <outline text="Today" type="rss" xmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=679471" htmlUrl="https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=679471"/>
+    </body>
+</opml>

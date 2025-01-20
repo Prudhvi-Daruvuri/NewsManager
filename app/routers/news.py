@@ -37,6 +37,10 @@ async def get_news_simple(
         
         # Add category filter if provided
         if category:
+            if category.lower() in ["Sport","Sports","sport","sports"]:
+                category = "Sport"
+            if category.lower() in ["Global","global","GLOBAL","World","world","WORLD"]:
+                category = "World"
             query["category"] = category
         
         if last_retrieved_id:

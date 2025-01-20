@@ -13,11 +13,10 @@ prompt="""Extract All the news information from the news page. Extract the
                 2. author, 
                 3. date, 
                 4. article, 
-                5. category, 
-                6. keywords, 
-                7. image_links, 
-                8. video_links, 
-                9. related_news_links.
+                5. keywords, 
+                6. image_links, 
+                7. video_links, 
+                8. related_news_links.
                 Extract information only if the information is present in the page. If the information is not present in the page, return 'NA' for that field.
                 
                 Generate these additional fields based on the extracted information:
