@@ -8,5 +8,6 @@ services:
     env_file:
       - .env
     environment:
-      - CORS_ORIGINS=["http://54.167.37.145:8080", "http://localhost:8080", "http://localhost:8000"]
+      - CORS_ORIGINS=["http://54.167.37.145:8080", "http://localhost:8080", "http://localhost:8000", "http://54.167.37.145:8000","*"]
+      - API_HOST=http://54.167.37.145:8000
     restart: always

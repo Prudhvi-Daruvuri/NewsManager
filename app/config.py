@@ -15,8 +15,17 @@ class Settings:
     PROJECT_VERSION = "1.0.0"
     PROJECT_DESCRIPTION = "A FastAPI-based news management system"
     
+    # API Configuration
+    API_HOST = os.getenv("API_HOST", "http://localhost:8000")
+    
     # CORS Configuration
-    default_origins = ["http://54.167.37.145:8080", "http://localhost:8080", "http://localhost:8000"]
+    default_origins = [
+        "http://54.167.37.145:8080",
+        "http://localhost:8080",
+        "http://localhost:8000",
+        "http://54.167.37.145:8000",
+        "*"
+    ]
     CORS_ORIGINS = json.loads(os.getenv("CORS_ORIGINS", json.dumps(default_origins)))
     CORS_CREDENTIALS = True
     CORS_METHODS = ["*"]
